@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Train Ticket Booking</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 30px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        margin-top: 15px;
+        width: 100%;
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #0056b3;
+    }
+
+    .ticket {
+        margin-top: 20px;
+        padding: 15px;
+        border: 2px dashed #333;
+        display: none;
+        background: #fafafa;
+    }
+
+    .ticket h3 {
+        text-align: center;
+    }
+
+    .row {
+        display: flex;
+        gap: 10px;
+    }
+
+    .row div {
+        flex: 1;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🚆 Train Ticket Booking</h2>
+
+    <!-- Train Details -->
+    <label>From</label>
+    <input type="text" id="from" placeholder="Enter source station">
+
+    <label>To</label>
+    <input type="text" id="to" placeholder="Enter destination">
+
+    <div class="row">
+        <div>
+            <label>Date</label>
+            <input type="date" id="date">
+        </div>
+        <div>
+            <label>Class</label>
+            <select id="class">
+                <option value="Sleeper">Sleeper</option>
+                <option value="AC">AC</option>
+                <option value="General">General</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Passenger Details -->
+    <label>Passenger Name</label>
+    <input type="text" id="name" placeholder="Enter name">
+
+    <div class="row">
+        <div>
+            <label>Age</label>
+            <input type="number" id="age">
+        </div>
+        <div>
+            <label>Gender</label>
+            <select id="gender">
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+            </select>
+        </div>
+    </div>
+
+    <button onclick="bookTicket()">Book Ticket</button>
+
+    <!-- Ticket Output -->
+    <div class="ticket" id="ticket">
+        <h3>🎟️ Ticket Confirmed</h3>
+        <p><strong>From:</strong> <span id="t_from"></span></p>
+        <p><strong>To:</strong> <span id="t_to"></span></p>
+        <p><strong>Date:</strong> <span id="t_date"></span></p>
+        <p><strong>Class:</strong> <span id="t_class"></span></p>
+        <hr>
+        <p><strong>Name:</strong> <span id="t_name"></span></p>
+        <p><strong>Age:</strong> <span id="t_age"></span></p>
+        <p><strong>Gender:</strong> <span id="t_gender"></span></p>
+        <p><strong>PNR:</strong> <span id="pnr"></span></p>
+    </div>
+</div>
+
+<script>
+function bookTicket() {
+    let from = document.getElementById("from").value;
+    let to = document.getElementById("to").value;
+    let date = document.getElementById("date").value;
+    let travelClass = document.getElementById("class").value;
+    let name = document.getElementById("name").value;
+    let age = document.getElementById("age").value;
+    let gender = document.getElementById("gender").value;
+
+    // Validation
+    if (!from || !to || !date || !name || !age) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    // Generate random PNR
+    let pnr = Math.floor(Math.random() * 9000000000) + 1000000000;
+
+    // Set values
+    document.getElementById("t_from").innerText = from;
+    document.getElementById("t_to").innerText = to;
+    document.getElementById("t_date").innerText = date;
+    document.getElementById("t_class").innerText = travelClass;
+    document.getElementById("t_name").innerText = name;
+    document.getElementById("t_age").innerText = age;
+    document.getElementById("t_gender").innerText = gender;
+    document.getElementById("pnr").innerText = pnr;
+
+    // Show ticket
+    document.getElementById("ticket").style.display = "block";
+}
+</script>
+
+</body>
+</html>
