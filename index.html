@@ -2,176 +2,215 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Train Ticket Booking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clothing Store</title>
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f4f6f8;
-        margin: 0;
-        padding: 0;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-    .container {
-        max-width: 800px;
-        margin: 30px auto;
-        background: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+body {
+    background: #f5f5f5;
+}
 
-    h2 {
-        text-align: center;
-        color: #333;
-    }
+/* Header */
+header {
+    background: #111;
+    color: #fff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    label {
-        display: block;
-        margin-top: 10px;
-        font-weight: bold;
-    }
+header h1 {
+    font-size: 22px;
+}
 
-    input, select {
-        width: 100%;
-        padding: 8px;
-        margin-top: 5px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
+.cart-btn {
+    background: #ff4d4d;
+    padding: 8px 15px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
 
-    button {
-        margin-top: 15px;
-        width: 100%;
-        padding: 10px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+/* Products */
+.container {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
 
-    button:hover {
-        background: #0056b3;
-    }
+.card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
 
-    .ticket {
-        margin-top: 20px;
-        padding: 15px;
-        border: 2px dashed #333;
-        display: none;
-        background: #fafafa;
-    }
+.card:hover {
+    transform: translateY(-5px);
+}
 
-    .ticket h3 {
-        text-align: center;
-    }
+.card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
 
-    .row {
-        display: flex;
-        gap: 10px;
-    }
+.card-content {
+    padding: 15px;
+}
 
-    .row div {
-        flex: 1;
+.card h3 {
+    font-size: 18px;
+}
+
+.price {
+    color: green;
+    margin: 10px 0;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background: #111;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Cart */
+.cart {
+    position: fixed;
+    right: -350px;
+    top: 0;
+    width: 350px;
+    height: 100%;
+    background: white;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+    padding: 20px;
+    transition: 0.4s;
+    overflow-y: auto;
+}
+
+.cart.active {
+    right: 0;
+}
+
+.cart h2 {
+    margin-bottom: 15px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.total {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Responsive */
+@media(max-width:600px) {
+    header h1 {
+        font-size: 18px;
     }
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h2>🚆 Train Ticket Booking</h2>
+<header>
+    <h1>🛍️ Trendy Clothes</h1>
+    <button class="cart-btn" onclick="toggleCart()">Cart (<span id="count">0</span>)</button>
+</header>
 
-    <!-- Train Details -->
-    <label>From</label>
-    <input type="text" id="from" placeholder="Enter source station">
+<div class="container" id="products"></div>
 
-    <label>To</label>
-    <input type="text" id="to" placeholder="Enter destination">
-
-    <div class="row">
-        <div>
-            <label>Date</label>
-            <input type="date" id="date">
-        </div>
-        <div>
-            <label>Class</label>
-            <select id="class">
-                <option value="Sleeper">Sleeper</option>
-                <option value="AC">AC</option>
-                <option value="General">General</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- Passenger Details -->
-    <label>Passenger Name</label>
-    <input type="text" id="name" placeholder="Enter name">
-
-    <div class="row">
-        <div>
-            <label>Age</label>
-            <input type="number" id="age">
-        </div>
-        <div>
-            <label>Gender</label>
-            <select id="gender">
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-            </select>
-        </div>
-    </div>
-
-    <button onclick="bookTicket()">Book Ticket</button>
-
-    <!-- Ticket Output -->
-    <div class="ticket" id="ticket">
-        <h3>🎟️ Ticket Confirmed</h3>
-        <p><strong>From:</strong> <span id="t_from"></span></p>
-        <p><strong>To:</strong> <span id="t_to"></span></p>
-        <p><strong>Date:</strong> <span id="t_date"></span></p>
-        <p><strong>Class:</strong> <span id="t_class"></span></p>
-        <hr>
-        <p><strong>Name:</strong> <span id="t_name"></span></p>
-        <p><strong>Age:</strong> <span id="t_age"></span></p>
-        <p><strong>Gender:</strong> <span id="t_gender"></span></p>
-        <p><strong>PNR:</strong> <span id="pnr"></span></p>
-    </div>
+<!-- Cart -->
+<div class="cart" id="cart">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <div class="total">Total: ₹<span id="total">0</span></div>
 </div>
 
 <script>
-function bookTicket() {
-    let from = document.getElementById("from").value;
-    let to = document.getElementById("to").value;
-    let date = document.getElementById("date").value;
-    let travelClass = document.getElementById("class").value;
-    let name = document.getElementById("name").value;
-    let age = document.getElementById("age").value;
-    let gender = document.getElementById("gender").value;
+const products = [
+    {id:1, name:"T-Shirt", price:499, img:"https://picsum.photos/300?1"},
+    {id:2, name:"Jeans", price:999, img:"https://picsum.photos/300?2"},
+    {id:3, name:"Hoodie", price:1299, img:"https://picsum.photos/300?3"},
+    {id:4, name:"Jacket", price:1999, img:"https://picsum.photos/300?4"},
+    {id:5, name:"Sneakers", price:1499, img:"https://picsum.photos/300?5"},
+    {id:6, name:"Cap", price:299, img:"https://picsum.photos/300?6"}
+];
 
-    // Validation
-    if (!from || !to || !date || !name || !age) {
-        alert("Please fill all fields");
-        return;
-    }
+let cart = [];
 
-    // Generate random PNR
-    let pnr = Math.floor(Math.random() * 9000000000) + 1000000000;
+function renderProducts() {
+    const container = document.getElementById("products");
+    container.innerHTML = "";
 
-    // Set values
-    document.getElementById("t_from").innerText = from;
-    document.getElementById("t_to").innerText = to;
-    document.getElementById("t_date").innerText = date;
-    document.getElementById("t_class").innerText = travelClass;
-    document.getElementById("t_name").innerText = name;
-    document.getElementById("t_age").innerText = age;
-    document.getElementById("t_gender").innerText = gender;
-    document.getElementById("pnr").innerText = pnr;
-
-    // Show ticket
-    document.getElementById("ticket").style.display = "block";
+    products.forEach(p => {
+        container.innerHTML += `
+            <div class="card">
+                <img src="${p.img}">
+                <div class="card-content">
+                    <h3>${p.name}</h3>
+                    <div class="price">₹${p.price}</div>
+                    <button class="btn" onclick="addToCart(${p.id})">Add to Cart</button>
+                </div>
+            </div>
+        `;
+    });
 }
+
+function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    cart.push(product);
+    updateCart();
+}
+
+function updateCart() {
+    const cartItems = document.getElementById("cart-items");
+    const count = document.getElementById("count");
+    const total = document.getElementById("total");
+
+    cartItems.innerHTML = "";
+    let sum = 0;
+
+    cart.forEach((item, index) => {
+        sum += item.price;
+
+        cartItems.innerHTML += `
+            <div class="cart-item">
+                <span>${item.name}</span>
+                <span>₹${item.price}</span>
+            </div>
+        `;
+    });
+
+    count.innerText = cart.length;
+    total.innerText = sum;
+}
+
+function toggleCart() {
+    document.getElementById("cart").classList.toggle("active");
+}
+
+renderProducts();
 </script>
 
 </body>
